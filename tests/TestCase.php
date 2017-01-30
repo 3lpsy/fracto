@@ -2,10 +2,10 @@
 
 namespace Elpsy\Fracto\Test;
 
-use Closure;
 use PHPUnit_Framework_TestCase;
-use Elpsy\Fracto\Fracto;
 use Faker\Factory as FakerFactory;
+
+include __DIR__.'/helpers.php';
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
@@ -27,22 +27,21 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
         $this->faker = FakerFactory::create();
 
-        $this->fractal = new Fracto;
+        $addresses = $this->factory("address")->create(5);
 
-        $addresses = $this->factory("address")->create();
-
-        $authors = $this->factory('author')->each(function ($author) {
+        $authors = $this->factory('author')->each(function ($author) use ($addresses) {
+            $key = array_rand($addresses, 1);
             return [
-                'address' => array_rand($addresses, 1)[0]
+                'address' => $addresses[$key]
             ];
-        })->create();
+        })->create(5);
 
-        $books = $this->factory('book')->each(function ($author) {
+        $books = $this->factory('book')->each(function ($book) use ($authors) {
+            $key = array_rand($authors, 1);
             return [
-                'author' => array_rand($authors, 1)[0]
+                'author' => $authors[$key]
             ];
-        })->create();
-
+        })->create(5);
         $this->data = ['addresses' => $addresses, 'authors' => $authors, 'books' => $books];
     }
 

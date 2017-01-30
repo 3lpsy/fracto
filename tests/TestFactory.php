@@ -1,9 +1,8 @@
 <?php
-namespace Elspy\Fracto\Test;
-
-use Closure;
 
 namespace Elpsy\Fracto\Test;
+
+use Closure;
 
 abstract class TestFactory
 {
@@ -16,13 +15,16 @@ abstract class TestFactory
     public function __construct($faker)
     {
         $this->faker = $faker;
-        $this->each = function($item) {
-            return [];
-        }
+
+        $this->each = function () {
+            return array();
+        };
     }
 
-    public function each(Closure $callback) {
+    public function each(\Closure $callback)
+    {
         $this->each = $callback;
+        return $this;
     }
 
     public function create($number = 1)
@@ -31,19 +33,21 @@ abstract class TestFactory
 
         for ($ii = 0; $ii < $number; $ii++) {
             $custom = [];
+
             if ($this->increments) {
                 $custom['id'] = $ii + 1;
             }
+
             $data[] = $this->one();
         }
 
         return $data;
-
     }
 
     public function one($custom = [])
     {
-        $generated = array_merge($this->generate(), $custom);
-        return array_merge($generated, $this->each($item));
+        $generated = $this->generate();
+        $mapped = array_merge($generated, call_user_func($this->each, $generated));
+        return array_merge($mapped, $custom);
     }
 }

@@ -13,7 +13,7 @@ class Fracto implements FractoInterface
 
     protected $presenter;
 
-    protected $results;
+    protected $data;
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class Fracto implements FractoInterface
         $fractal = new static;
 
         if ($serializer === null) {
-            $serializer = $this->presenter->defaultSerializer();
+            $serializer = $fractal->presenter->defaultSerializer();
         }
 
         $fractal->data($data)->transformer($transformer)->serializer($serializer);
@@ -84,27 +84,60 @@ class Fracto implements FractoInterface
 
     public function includes($includes = [])
     {
+        if (! is_array($includes)) {
+            $includes = func_get_args();
+        }
+
         $this->presenter->includes($includes);
 
         return $this;
     }
 
-    public function data($results = [])
+    public function exclude($excludes = [])
     {
-        $this->results = $results;
+        if (! is_array($excludes)) {
+            $excludes = func_get_args();
+        }
+
+        $this->presenter->excludes($excludes);
 
         return $this;
     }
 
-    public function toArray()
+    public function data($data = [])
     {
-        return $this->present();
+        if (func_num_args() > 1) {
+            $data = func_get_args();
+        }
+
+        if (! is_array($data)) {
+            $data = (array) $data;
+        }
+
+        $this->data = $data;
+
+        return $this;
     }
 
-    public function transform()
+    public function transform($data = null)
     {
-        return $this->presenter->present($this->results);
+        if ($data) {
+            $this->data($data);
+        }
+
+        return $this->presenter->present($this->data);
     }
+
+    public function toArray($data = null)
+    {
+        return $this->transform($data)->toArray();
+    }
+
+    public function toJson($data = null)
+    {
+        return $this->transform($data)->toJson();
+    }
+
 
     protected function makePresenter($presenter = null)
     {

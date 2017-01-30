@@ -1,4 +1,3 @@
-
 <?php
 namespace Elpsy\Fracto\Test;
 
@@ -13,7 +12,7 @@ class TestAuthorTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'addresss',
+        'address',
     ];
 
     /**

@@ -1,4 +1,3 @@
-
 <?php
 namespace Elpsy\Fracto\Test;
 
@@ -20,7 +19,6 @@ class TestAddressTransformer extends TransformerAbstract
             'line1' => $author['line_1'],
             'line2' => $author['line_2'],
             'city' => $author['city']
-
         ];
     }
 }

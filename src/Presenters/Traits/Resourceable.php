@@ -27,4 +27,15 @@ trait Resourceable
     {
         $this->collectionKey = $key;
     }
+
+    public function createResource($data)
+    {
+        if ($data instanceof EloquentCollection || $data instanceof SupportCollection || is_array($data)) {
+            $this->resource = $this->transformCollection($data);
+        } elseif ($data instanceof AbstractPaginator) {
+            $this->resource = $this->transformPaginator($data);
+        } else {
+            $this->resource = $this->transformItem($data);
+        }
+    }
 }

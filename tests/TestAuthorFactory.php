@@ -2,7 +2,7 @@
 
 namespace Elpsy\Fracto\Test;
 
-use Closure;
+use Elpsy\Fracto\Test\TestFactory;
 
 class TestAuthorFactory extends TestFactory
 {

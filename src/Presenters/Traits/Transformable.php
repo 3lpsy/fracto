@@ -14,6 +14,9 @@ trait Transformable
     public function transformer($transformer = null)
     {
         if ($transformer) {
+            if (is_string($transformer)) {
+                $transformer = new $transformer;
+            }
             $this->setTransformer($transformer);
         }
         return $this->getTransformer();

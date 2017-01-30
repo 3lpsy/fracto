@@ -3,16 +3,15 @@
 namespace Elpsy\Fracto\Test;
 
 use League\Fractal\Pagination\Cursor;
-
-use Elpsy\Fractalistic\ArraySerializer;
+use Elpsy\Fracto\Fracto;
 
 class FractoTest extends TestCase
 {
     /** @test */
-    public function it_can_transform_multiple()
+    public function it_can_init_fracto_instance()
     {
-        $fractal = $this->fractal;
+        $fracto = new Fracto;
 
-        $this->assertEquals($fractal, $fractal);
+        $this->assertEquals($fracto, $fracto);
     }
 }

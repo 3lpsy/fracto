@@ -6,6 +6,8 @@ trait Includable
 {
     public $includes = [];
 
+    public $excludes = [];
+
     public function includes($include)
     {
         if (is_array($include)) {
@@ -27,6 +29,30 @@ trait Includable
     protected function parseIncludes()
     {
         $this->fractal->parseIncludes($this->includes->toArray());
+        return $this;
+    }
+
+    public function excludes($excludes)
+    {
+        if (is_array($excludes)) {
+            return collect($exclude)->each(function ($exc) {
+                $this->pushInclude($exc);
+            });
+        }
+        return $this->pushExclude($exclude);
+    }
+
+    public function pushExclude($exclude)
+    {
+        if ($this->excludes->contains($exclude)) {
+            return $this;
+        }
+        $this->excludes->push($exclude);
+    }
+
+    protected function parseExcludes()
+    {
+        $this->fractal->parseExcludes($this->excludes->toArray());
         return $this;
     }
 }
