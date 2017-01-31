@@ -18,6 +18,7 @@ trait Resourceable
     {
         $itemKey = $key;
         $collectionKey = is_string($key) ? Str::plural($key) : $key;
+        
         $this->keyItem($itemKey);
         $this->keyCollection($collectionKey);
     }

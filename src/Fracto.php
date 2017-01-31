@@ -110,7 +110,6 @@ class Fracto implements FractoInterface
         if (func_num_args() > 1) {
             $data = func_get_args();
         }
-        
 
         if (! is_array($data) && ! $data instanceof Collection) {
             $data = (array) $data;
