@@ -5,6 +5,7 @@ namespace Elpsy\Fracto\Test;
 use Elpsy\Fracto\Fracto;
 use Elpsy\Fracto\Test\TestBookTransformer;
 use Elpsy\Fracto\Serializers\DataSerializer;
+use Illuminate\Support\Collection;
 
 class BookTest extends TestCase
 {
@@ -35,7 +36,7 @@ class BookTest extends TestCase
     {
         $book = $this->data['books'][0];
         $fracto = new Fracto;
-        $data =$fracto->transformer(TestBookTransformer::class)
+        $data = $fracto->transformer(TestBookTransformer::class)
             ->data([$book])
             ->toArray();
         $this->assertEquals($data['data'][0]['publishedAt'], $book['published_at']->format('Y-m-d'));
@@ -65,6 +66,19 @@ class BookTest extends TestCase
         $this->assertEquals($manual, $helper);
     }
 
+    /** @test */
+    public function it_can_transform_book_collection_with_constructor()
+    {
+        $books = new Collection($this->data['books']);
+        $fracto = new Fracto;
+
+        $data = $fracto->transformer(TestBookTransformer::class)
+            ->data($books)
+            ->includes('author')
+            ->toArray();
+
+        $this->assertEquals($books[0]['author']['id'], $data['data'][0]['id']);
+    }
 
     /** @test */
     public function it_can_transform_book_with_include()

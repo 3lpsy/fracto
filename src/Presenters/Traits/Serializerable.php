@@ -5,7 +5,7 @@ namespace Elpsy\Fracto\Presenters\Traits;
 use Elpsy\Fracto\Serializers\DataSerializer;
 use Elpsy\Fracto\Serializers\JsonSerializer;
 
-trait Serializable
+trait Serializerable
 {
     protected $serializer;
 

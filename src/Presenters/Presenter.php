@@ -5,7 +5,7 @@ namespace Elpsy\Fracto\Presenters;
 use Exception;
 
 use Elpsy\Fracto\Presenters\Traits\Transformable;
-use Elpsy\Fracto\Presenters\Traits\Serializable;
+use Elpsy\Fracto\Presenters\Traits\Serializerable;
 use Elpsy\Fracto\Presenters\Traits\Resourceable;
 use Elpsy\Fracto\Presenters\Traits\Includable;
 use League\Fractal\Serializer\JsonApiSerializer;
@@ -14,10 +14,8 @@ use League\Fractal\Manager;
 
 class Presenter implements PresenterInterface
 {
-    use Transformable, Serializable, Resourceable, Includable;
-    /**
-     * @var \League\Fractal\Manager
-     */
+    use Transformable, Serializerable, Resourceable, Includable;
+
     protected $fractal = null;
 
     protected $data = null;
@@ -27,7 +25,6 @@ class Presenter implements PresenterInterface
         $this->fractal = new Manager();
         $this->includes = new Collection();
         $this->excludes = new Collection();
-
         $this->initSerializer();
     }
 

@@ -6,6 +6,7 @@ use Exception;
 
 use Elpsy\Fracto\FractoInterface;
 use Elpsy\Fracto\Presenters\Presenter;
+use Illuminate\Support\Collection;
 
 class Fracto implements FractoInterface
 {
@@ -110,10 +111,9 @@ class Fracto implements FractoInterface
             $data = func_get_args();
         }
 
-        if (! is_array($data)) {
+        if (! is_array($data) && ! $data instanceof Collection) {
             $data = (array) $data;
         }
-
         $this->data = $data;
 
         return $this;
