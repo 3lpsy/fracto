@@ -25,7 +25,7 @@ class Presenter implements PresenterInterface
         $this->fractal = new Manager();
         $this->includes = new Collection();
         $this->excludes = new Collection();
-        
+
         $this->initSerializer();
     }
 

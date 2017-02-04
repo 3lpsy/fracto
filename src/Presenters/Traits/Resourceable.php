@@ -5,20 +5,23 @@ namespace Elpsy\Fracto\Presenters\Traits;
 use Illuminate\Support\Collection;
 use League\Fractal\Pagination\PaginatorInterface as AbstractPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Str;
 
 trait Resourceable
 {
-    protected $collectionKey = null;
+    protected $collectionKey = "data";
 
     protected $itemKey = "data";
 
-    protected $resource = "data";
+    protected $resource;
+
+    protected $resourceType;
 
     public function key($key = null)
     {
         $itemKey = $key;
         $collectionKey = is_string($key) ? Str::plural($key) : $key;
-        
+
         $this->keyItem($itemKey);
         $this->keyCollection($collectionKey);
     }
@@ -33,15 +36,52 @@ trait Resourceable
         $this->collectionKey = $key;
     }
 
+    public function type($type)
+    {
+        if (! in_array($type, ['collection', 'item', 'paginator'])) {
+            throw new \Exception("Invalid Resource Type");
+        }
+        $this->resourceType = $type;
+    }
+
     public function createResource($data)
     {
-        if ($this->isCollectable($data)) {
-            $this->resource = $this->transformCollection($data);
-        } elseif ($this->isPaginator($data)) {
-            $this->resource = $this->transformPaginator($data);
-        } else {
-            $this->resource = $this->transformItem($data);
+        if ($this->hasResourceType()) {
+            return $this->resource = $this->resolveResource($data, $this->resourceType);
         }
+
+        $type = $this->resolveResourceTypeFromData($data);
+
+        return $this->resource = $this->resolveResource($data, $type);
+    }
+
+    protected function hasResourceType()
+    {
+        return !! $this->resourceType;
+    }
+
+    protected function resolveResourceTypeFromData($data)
+    {
+        if ($this->isCollectable($data)) {
+            return 'collection';
+        } elseif ($this->isPaginator($data)) {
+            return 'paginator';
+        } else {
+            return 'item';
+        }
+    }
+
+    protected function resolveResourceFromType($data, $type)
+    {
+        if ($type === 'collection') {
+            return $this->resource = $this->transformCollection($data);
+        } elseif ($type === 'paginator') {
+            return $this->resource = $this->transformPaginator($data);
+        } elseif ($type === 'item') {
+            return $this->resource = $this->transformItem($data);
+        }
+
+        throw new \Exception("Invalid Resource Type");
     }
 
     protected function isCollectable($data)

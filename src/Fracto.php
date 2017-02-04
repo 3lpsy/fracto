@@ -46,10 +46,13 @@ class Fracto implements FractoInterface
         return $this;
     }
 
-    // setter only
-    public function transformer($transformer)
+    public function transformer($transformer, $key = null)
     {
         $this->presenter->transformer($transformer);
+
+        if ($key) {
+            $this->presenter->key($key);
+        }
 
         return $this;
     }
@@ -58,6 +61,14 @@ class Fracto implements FractoInterface
     public function serializer($serializer)
     {
         $this->presenter->serializer($serializer);
+
+        return $this;
+    }
+
+    // setter only
+    public function paginator($adapter)
+    {
+        $this->presenter->paginator($adapter);
 
         return $this;
     }
@@ -105,15 +116,13 @@ class Fracto implements FractoInterface
         return $this;
     }
 
+
     public function data($data = [])
     {
         if (func_num_args() > 1) {
             $data = func_get_args();
         }
 
-        if (! is_array($data) && ! $data instanceof Collection) {
-            $data = (array) $data;
-        }
         $this->data = $data;
 
         return $this;
