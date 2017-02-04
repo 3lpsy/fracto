@@ -47,12 +47,12 @@ trait Resourceable
     public function createResource($data)
     {
         if ($this->hasResourceType()) {
-            return $this->resource = $this->resolveResource($data, $this->resourceType);
+            return $this->resource = $this->resolveResourceFromType($data, $this->resourceType);
         }
 
         $type = $this->resolveResourceTypeFromData($data);
 
-        return $this->resource = $this->resolveResource($data, $type);
+        return $this->resource = $this->resolveResourceFromType($data, $type);
     }
 
     protected function hasResourceType()

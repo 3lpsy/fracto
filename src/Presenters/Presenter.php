@@ -27,6 +27,7 @@ class Presenter implements PresenterInterface
         $this->excludes = new Collection();
 
         $this->initSerializer();
+        $this->initPaginator();
     }
 
     protected function createData()
