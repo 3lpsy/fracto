@@ -54,6 +54,11 @@ class DataSerializer extends FractalDataArraySerializer
         } else {
             $pagination['links']['next'] = "";
         }
+        if ($currentPage) {
+            $pagination['links']['current'] = $paginator->getUrl($currentPage);
+        } else {
+            $pagination['links']['current'] = "";
+        }
         return ['pagination' => $pagination];
     }
 }
