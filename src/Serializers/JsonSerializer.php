@@ -11,7 +11,7 @@
 
 namespace Elpsy\Fracto\Serializers;
 
-use League\Fractal\Serializer\JsonApiSerializer as FractalJsonSerializer;
+use Elpsy\Fracto\Serializers\DataSerializer;
 
 class JsonSerializer extends FractalJsonSerializer
 {
