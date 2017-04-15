@@ -86,7 +86,26 @@ trait Resourceable
 
     protected function isCollectable($data)
     {
-        return is_array($data) || $data instanceof Collection;
+        if (! is_array($data) && ! ($data instanceof Collection)) {
+            return false;
+        } elseif (count($data) < 1) {
+            // return as collectible as it doesn't matter
+            return true;
+        } else {
+            if ($data instanceof Collection) {
+                $keys = $data->keys();
+            } elseif (is_array($data)) {
+                $keys = array_keys($data);
+            }
+
+            $isAssoc = true;
+            foreach ($keys as $index => $key) {
+                if (! is_int($key)) {
+                    $isAssoc = false;
+                }
+            }
+            return $isAssoc;
+        }
     }
 
     protected function isPaginator($data)
